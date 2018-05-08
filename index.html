@@ -2,9 +2,40 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>JavaScript</title>
+	<title>Document</title>
+	<script>
+		var XMLHttpRequestObject = false;
+
+		if (window.XMLHttpRequest) {
+			XMLHttpRequestObject = new XMLHttpRequest();
+		} else if (window.ActiveXObject) {
+			XMLHttpRequestObject = new ActiveXObject('Microsoft.XMLHTTP');
+		}		
+		
+		function getData(dataSource, divID) {
+			alert(divID);
+			if (XMLHttpRequestObject) {
+				var obj = document.getElementById(divID);
+				XMLHttpRequestObject.open('GET', dataSource);
+
+				XMLHttpRequestObject.onreadystatechange = function() {
+					if (XMLHttpRequestObject.readyState == 4 &&
+						XMLHttpRequestObject.status == 200) {
+							obj.innerHTML = XMLHttpRequestObject.responseText;
+					}
+				}
+				XMLHttpRequestObject.send(null);
+			} else {
+				var obj = document.getElementById(divID);
+				obj.innerHTML = 'Sorry';
+			}
+		}
+	</script>
 </head>
 <body>
-	<script src="script.js"></script>
+	<div id="targetDiv"></div>	
+	<form>
+		<input type="button" value="Fetch the message" onclick="getData('https://github.com/kuznetsovandrey76/js/blob/master/data.txt', 'targetDiv')">
+	</form>
 </body>
 </html>
